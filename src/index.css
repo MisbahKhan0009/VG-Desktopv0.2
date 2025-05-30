@@ -8,6 +8,7 @@
     --card-color: theme('colors.everforest.light.card');
     --border-color: theme('colors.everforest.light.border');
     --text-color: theme('colors.everforest.light.text');
+    --cyan-rgb: 58 148 197;
   }
 
   :root[data-theme="dark"] {
@@ -15,6 +16,7 @@
     --card-color: theme('colors.everforest.dark.card');
     --border-color: theme('colors.everforest.dark.border');
     --text-color: theme('colors.everforest.dark.text');
+    --cyan-rgb: 127 187 179;
   }
 }
 
@@ -37,7 +39,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .highlight-row:hover {
-  @apply bg-everforest-light-accent-cyan/10 dark:bg-everforest-dark-accent-cyan/10;
+  @apply bg-[rgb(var(--cyan-rgb)/0.1)];
 }
 
 .highlight-row {
