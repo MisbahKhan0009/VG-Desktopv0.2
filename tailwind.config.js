@@ -1,16 +1,34 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        primary: '#FE7743',
-        background: '#EFEEEA',
-        content: '#273F4F',
-        accent: '#8B5CF6',
-        success: '#10B981',
-        warning: '#F59E0B',
-        error: '#EF4444',
+        everforest: {
+          dark: {
+            bg: '#1E2326',
+            card: '#2D353B',
+            border: '#475258',
+            text: '#D3C6AA',
+            accent: {
+              red: '#E67E80',
+              green: '#A7C080',
+              cyan: '#7FBBB3',
+            }
+          },
+          light: {
+            bg: '#F2EFDF',
+            card: '#F4F0D9',
+            border: '#DDD8BE',
+            text: '#5C6A72',
+            accent: {
+              red: '#F85552',
+              green: '#8DA101',
+              cyan: '#3A94C5',
+            }
+          }
+        }
       },
       fontFamily: {
         sans: ['IBM Plex Sans', 'sans-serif'],
@@ -20,21 +38,6 @@ export default {
         'retro': '2px 2px 0 rgba(0, 0, 0, 0.1)',
         'retro-lg': '4px 4px 0 rgba(0, 0, 0, 0.1)',
         'retro-xl': '6px 6px 0 rgba(0, 0, 0, 0.1)',
-        'glow': '0 0 8px rgba(254, 119, 67, 0.6)',
-      },
-      keyframes: {
-        shimmer: {
-          '0%': { backgroundPosition: '-200% 0' },
-          '100%': { backgroundPosition: '200% 0' },
-        },
-        blink: {
-          '0%, 100%': { opacity: 1 },
-          '50%': { opacity: 0.5 },
-        },
-      },
-      animation: {
-        shimmer: 'shimmer 3s linear infinite',
-        blink: 'blink 1s ease-in-out infinite',
       },
     },
   },
