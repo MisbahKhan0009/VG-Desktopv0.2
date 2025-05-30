@@ -14,7 +14,7 @@ export default {
             accent: {
               red: '#E67E80',
               green: '#A7C080',
-              cyan: 'rgb(127 187 179 / <alpha-value>)'
+              cyan: '#7FBBB3',
             }
           },
           light: {
@@ -25,7 +25,7 @@ export default {
             accent: {
               red: '#F85552',
               green: '#8DA101',
-              cyan: 'rgb(58 148 197 / <alpha-value>)'
+              cyan: '#3A94C5',
             }
           }
         }
