@@ -8,6 +8,9 @@
     --card-color: theme('colors.everforest.light.card');
     --border-color: theme('colors.everforest.light.border');
     --text-color: theme('colors.everforest.light.text');
+    --accent-red: theme('colors.everforest.light.accent.red');
+    --accent-green: theme('colors.everforest.light.accent.green');
+    --accent-cyan: theme('colors.everforest.light.accent.cyan');
   }
 
   :root[data-theme="dark"] {
@@ -15,6 +18,9 @@
     --card-color: theme('colors.everforest.dark.card');
     --border-color: theme('colors.everforest.dark.border');
     --text-color: theme('colors.everforest.dark.text');
+    --accent-red: theme('colors.everforest.dark.accent.red');
+    --accent-green: theme('colors.everforest.dark.accent.green');
+    --accent-cyan: theme('colors.everforest.dark.accent.cyan');
   }
 }
 
@@ -29,7 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .retro-card {
-  @apply bg-[var(--card-color)] rounded-lg border-2 border-[var(--border-color)] transition-all duration-300;
+  @apply bg-[var(--card-color)] rounded-lg border border-[var(--border-color)] transition-all duration-300;
 }
 
 .retro-card:hover {
@@ -37,9 +43,31 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .highlight-row:hover {
-  @apply bg-everforest-light-accent-cyan/10 dark:bg-everforest-dark-accent-cyan/10;
+  @apply bg-[var(--accent-cyan)]/10;
 }
 
 .highlight-row {
   @apply transition-colors duration-200;
+}
+
+.shimmering-bg {
+  background: linear-gradient(
+    120deg,
+    var(--card-color) 0%,
+    var(--card-color) 45%,
+    var(--border-color) 50%,
+    var(--card-color) 55%,
+    var(--card-color) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: -100% 50%;
+  }
 }
