@@ -10,7 +10,7 @@
     --text-color: theme('colors.everforest.light.text');
     --accent-red: theme('colors.everforest.light.accent.red');
     --accent-green: theme('colors.everforest.light.accent.green');
-    --accent-cyan: theme('colors.everforest.light.accent.cyan');
+    --accent-cyan-rgb: 58 148 197;
   }
 
   :root[data-theme="dark"] {
@@ -20,7 +20,7 @@
     --text-color: theme('colors.everforest.dark.text');
     --accent-red: theme('colors.everforest.dark.accent.red');
     --accent-green: theme('colors.everforest.dark.accent.green');
-    --accent-cyan: theme('colors.everforest.dark.accent.cyan');
+    --accent-cyan-rgb: 127 187 179;
   }
 }
 

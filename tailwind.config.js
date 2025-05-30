@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        'dynamic-accent-cyan': 'var(--accent-cyan)',
+        'dynamic-accent-cyan': 'rgb(var(--accent-cyan-rgb) / <alpha-value>)',
         everforest: {
           dark: {
             bg: '#1E2326',
