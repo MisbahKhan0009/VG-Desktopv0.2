@@ -28,7 +28,12 @@ export default {
               cyan: '#3A94C5',
             }
           }
-        }
+        },
+        primary: '#FE7743',
+        success: '#10B981',
+        error: '#EF4444',
+        content: '#273F4F',
+        background: '#F8F9FA'
       },
       fontFamily: {
         sans: ['IBM Plex Sans', 'sans-serif'],
