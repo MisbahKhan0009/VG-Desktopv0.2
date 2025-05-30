@@ -21,3 +21,5 @@ const ThemeToggle: React.FC = () => {
     </motion.button>
   );
 };
+
+export default ThemeToggle
