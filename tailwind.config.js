@@ -16,7 +16,7 @@ export default {
               red: '#E67E80',
               green: '#A7C080',
               cyan: '#7FBBB3',
-            }
+            },
           },
           light: {
             bg: '#F2EFDF',
@@ -27,14 +27,14 @@ export default {
               red: '#F85552',
               green: '#8DA101',
               cyan: '#3A94C5',
-            }
-          }
+            },
+          },
         },
         primary: '#FE7743',
         success: '#10B981',
         error: '#EF4444',
         content: '#273F4F',
-        background: '#F8F9FA'
+        background: '#F8F9FA',
       },
       fontFamily: {
         sans: ['IBM Plex Sans', 'sans-serif'],
@@ -44,6 +44,7 @@ export default {
         'retro': '2px 2px 0 rgba(0, 0, 0, 0.1)',
         'retro-lg': '4px 4px 0 rgba(0, 0, 0, 0.1)',
         'retro-xl': '6px 6px 0 rgba(0, 0, 0, 0.1)',
+        'soft-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', // Added custom soft-lg shadow
       },
     },
   },

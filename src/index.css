@@ -4,11 +4,16 @@
 
 body {
   @apply bg-everforest-light-bg dark:bg-everforest-dark-bg text-everforest-light-text dark:text-everforest-dark-text transition-colors duration-200;
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Space Grotesk", sans-serif;
   @apply font-bold;
 }
 
