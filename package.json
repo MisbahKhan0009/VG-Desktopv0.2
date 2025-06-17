@@ -7,9 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "build-tauri": "tauri build"
   },
   "dependencies": {
+    "@tauri-apps/api": "^2.5.0",
     "axios": "^1.6.2",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.344.0",
@@ -21,6 +24,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "@tauri-apps/cli": "^2.5.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
