@@ -9,8 +9,8 @@ import ThemeToggle from "../components/ThemeToggle";
 interface FolderUploadPageProps {
   isSidebarCollapsed: boolean;
   toggleSidebar: () => void;
-  currentPage: "single" | "batch";
-  onPageChange: (page: "single" | "batch") => void;
+  currentPage: "home" | "single" | "batch" | "results" | "settings";
+  onPageChange: (page: "home" | "single" | "batch" | "results" | "settings") => void;
 }
 
 const FolderUploadPage: React.FC<FolderUploadPageProps> = ({ isSidebarCollapsed, toggleSidebar, currentPage, onPageChange }) => {

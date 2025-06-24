@@ -7,19 +7,22 @@ import GraphCard from "./components/GraphCard";
 import MomentsTableCard from "./components/MomentsTableCard";
 import HighlightedMomentCard from "./components/HighlightedMomentCard";
 import FolderUploadPage from "./pages/FolderUploadPage";
+import HomePage from "./pages/HomePage";
+import ResultsPage from "./pages/ResultsPage";
+import SettingsPage from "./pages/SettingsPage";
 import { ResultsProvider } from "./context/ResultsContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import ThemeToggle from "./components/ThemeToggle";
 
 function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [currentPage, setCurrentPage] = useState<"single" | "batch">("single");
+  const [currentPage, setCurrentPage] = useState<"home" | "single" | "batch" | "results" | "settings">("home");
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
-  const handlePageChange = (page: "single" | "batch") => {
+  const handlePageChange = (page: "home" | "single" | "batch" | "results" | "settings") => {
     setCurrentPage(page);
   };
 
@@ -38,6 +41,30 @@ function App() {
     return (
       <ThemeProvider>
         <FolderUploadPage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
+      </ThemeProvider>
+    );
+  }
+
+  if (currentPage === "home") {
+    return (
+      <ThemeProvider>
+        <HomePage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
+      </ThemeProvider>
+    );
+  }
+
+  if (currentPage === "results") {
+    return (
+      <ThemeProvider>
+        <ResultsPage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
+      </ThemeProvider>
+    );
+  }
+
+  if (currentPage === "settings") {
+    return (
+      <ThemeProvider>
+        <SettingsPage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
       </ThemeProvider>
     );
   }

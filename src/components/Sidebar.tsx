@@ -5,11 +5,11 @@ import { Home, Upload, BarChart2, Settings, Menu, ChevronLeft, FolderOpen } from
 interface SidebarProps {
   collapsed: boolean;
   toggleSidebar: () => void;
-  currentPage?: "single" | "batch";
-  onPageChange?: (page: "single" | "batch") => void;
+  currentPage?: "home" | "single" | "batch" | "results" | "settings";
+  onPageChange?: (page: "home" | "single" | "batch" | "results" | "settings") => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar, currentPage = "single", onPageChange }) => {
+const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar, currentPage = "home", onPageChange }) => {
   const sidebarVariants = {
     expanded: { width: "16rem" },
     collapsed: { width: "4rem" },
@@ -19,8 +19,8 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar, currentPage
     {
       icon: Home,
       label: "Home",
-      active: false,
-      onClick: () => {},
+      active: currentPage === "home",
+      onClick: () => onPageChange?.("home"),
     },
     {
       icon: Upload,
@@ -37,14 +37,14 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar, currentPage
     {
       icon: BarChart2,
       label: "Results",
-      active: false,
-      onClick: () => {},
+      active: currentPage === "results",
+      onClick: () => onPageChange?.("results"),
     },
     {
       icon: Settings,
       label: "Settings",
-      active: false,
-      onClick: () => {},
+      active: currentPage === "settings",
+      onClick: () => onPageChange?.("settings"),
     },
   ];
 
