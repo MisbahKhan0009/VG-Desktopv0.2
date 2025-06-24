@@ -2,6 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Light theme variables */
+  --bg-color: #f2efdf;
+  --text-color: #5c6a72;
+  --card-color: #f4f0d9;
+  --border-color: #ddd8be;
+  --primary-color: #fe7743;
+  --accent-cyan: #3a94c5;
+  --accent-green: #8da101;
+}
+
+[data-theme="dark"] {
+  /* Dark theme variables */
+  --bg-color: #1e2326;
+  --text-color: #d3c6aa;
+  --card-color: #2d353b;
+  --border-color: #475258;
+  --primary-color: #fe7743;
+  --accent-cyan: #7fbbb3;
+  --accent-green: #a7c080;
+}
+
+/* Ensure text visibility in both themes */
+.dark {
+  color-scheme: dark;
+}
+
+/* Text color utilities that work with both approaches */
+.text-theme-primary {
+  @apply text-everforest-light-text dark:text-everforest-dark-text;
+}
+
+.text-theme-secondary {
+  @apply text-everforest-light-text/70 dark:text-everforest-dark-text/70;
+}
+
 body {
   @apply bg-everforest-light-bg dark:bg-everforest-dark-bg text-everforest-light-text dark:text-everforest-dark-text transition-colors duration-200;
   font-family: "IBM Plex Sans", sans-serif;
@@ -27,7 +63,12 @@ h6 {
   @apply bg-everforest-light-card dark:bg-everforest-dark-card rounded-lg transition-all duration-200;
 }
 
-.card:hover {
+.retro-card {
+  @apply bg-everforest-light-card dark:bg-everforest-dark-card rounded-lg transition-all duration-200 border border-everforest-light-border dark:border-everforest-dark-border;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.retro-card:hover {
   @apply shadow-soft-lg;
   transform: translate(0, -2px);
 }
@@ -52,4 +93,81 @@ h6 {
 
 .highlight-row:hover {
   @apply bg-everforest-light-accent-cyan/10 dark:bg-everforest-dark-accent-cyan/10;
+}
+
+/* Theme-aware utility classes for better text visibility */
+.text-content {
+  @apply text-gray-800 dark:text-gray-100;
+}
+
+.text-content\/70 {
+  @apply text-gray-600 dark:text-gray-300;
+}
+
+.text-content\/50 {
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+.text-content\/30 {
+  @apply text-gray-400 dark:text-gray-500;
+}
+
+.text-content\/10 {
+  @apply text-gray-300 dark:text-gray-600;
+}
+
+.text-primary {
+  @apply text-everforest-light-accent-green dark:text-everforest-dark-accent-green;
+}
+
+.text-secondary {
+  @apply text-gray-600 dark:text-gray-300;
+}
+
+.text-muted {
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+.text-error {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.text-success {
+  @apply text-green-600 dark:text-green-400;
+}
+
+.text-warning {
+  @apply text-yellow-600 dark:text-yellow-400;
+}
+
+.text-info {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+.bg-background {
+  @apply bg-everforest-light-bg dark:bg-everforest-dark-bg;
+}
+
+.bg-surface {
+  @apply bg-everforest-light-card dark:bg-everforest-dark-card;
+}
+
+.border-default {
+  @apply border-everforest-light-border dark:border-everforest-dark-border;
+}
+
+.border-content\/20 {
+  @apply border-gray-300 dark:border-gray-600;
+}
+
+.border-content\/10 {
+  @apply border-gray-200 dark:border-gray-700;
+}
+
+.border-primary\/50 {
+  @apply border-everforest-light-accent-green/50 dark:border-everforest-dark-accent-green/50;
+}
+
+.bg-primary\/5 {
+  @apply bg-everforest-light-accent-green/5 dark:bg-everforest-dark-accent-green/5;
 }

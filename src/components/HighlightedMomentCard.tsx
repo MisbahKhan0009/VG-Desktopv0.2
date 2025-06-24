@@ -13,6 +13,7 @@ const HighlightedMomentCard: React.FC = () => {
   } | null>(null);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [hasAutoPlayed, setHasAutoPlayed] = useState<boolean>(false);
   const playerRef = useRef<ReactPlayer>(null);
 
   // Helper function to convert timestamp string to seconds
@@ -35,6 +36,22 @@ const HighlightedMomentCard: React.FC = () => {
       setHighestMoment(null);
     }
   }, [results]);
+
+  // Auto-play the highest moment when results are available
+  useEffect(() => {
+    if (highestMoment && playerRef.current && !hasAutoPlayed) {
+      const startSeconds = timeToSeconds(highestMoment.startTime);
+      
+      // Auto-play after a short delay
+      setTimeout(() => {
+        if (playerRef.current) {
+          playerRef.current.seekTo(startSeconds);
+          setIsPlaying(true);
+          setHasAutoPlayed(true);
+        }
+      }, 1000);
+    }
+  }, [highestMoment, hasAutoPlayed]);
 
   const handleSeek = (time: number) => {
     if (playerRef.current) {
@@ -117,6 +134,7 @@ const HighlightedMomentCard: React.FC = () => {
             >
               <p className="text-white text-sm">
                 Highlighted: <span className="font-medium">{highestMoment.startTime}</span> to <span className="font-medium">{highestMoment.endTime}</span>
+                {hasAutoPlayed && <span className="ml-2 text-primary">● Auto-played</span>}
               </p>
             </motion.div>
           )}
@@ -129,6 +147,11 @@ const HighlightedMomentCard: React.FC = () => {
             <p className="text-content/70">
               This segment from <span className="font-medium">{highestMoment.startTime}</span> to <span className="font-medium">{highestMoment.endTime}</span> was detected as most relevant to your query with a confidence score of <span className="font-medium text-primary">{(highestMoment.score * 100).toFixed(0)}%</span>.
             </p>
+            {hasAutoPlayed && (
+              <p className="text-primary text-sm mt-2 font-medium">
+                ✓ Video automatically started from this moment
+              </p>
+            )}
           </div>
           
           <motion.button
@@ -137,7 +160,7 @@ const HighlightedMomentCard: React.FC = () => {
             whileHover={{ y: -2, boxShadow: '4px 4px 0 rgba(0, 0, 0, 0.1)' }}
             whileTap={{ y: 0, boxShadow: '2px 2px 0 rgba(0, 0, 0, 0.1)' }}
           >
-            Play Highlighted Moment
+            {isPlaying ? 'Replay Highlighted Moment' : 'Play Highlighted Moment'}
           </motion.button>
         </div>
       </div>
