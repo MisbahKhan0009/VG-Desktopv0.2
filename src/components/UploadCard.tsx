@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
 import { Upload, FileVideo, X } from 'lucide-react';
@@ -6,6 +6,31 @@ import { useResults } from '../context/ResultsContext';
 
 const UploadCard: React.FC = () => {
   const { videoFile, setVideoFile, query, setQuery, submitRequest, loading, error } = useResults();
+  const [selectingSample, setSelectingSample] = useState<string | null>(null);
+
+  // Sample gallery items (4 videos + descriptions)
+  const samples = [
+    {
+      label: 'Abuse001_x264.mp4',
+      src: '/SampleVideos/Abuse001_x264.mp4',
+      description: 'A man slaping an woman and woman falls down',
+    },
+    {
+      label: 'Burglary005_x264.mp4',
+      src: '/SampleVideos/Burglary005_x264.mp4',
+  description: 'A man wearing white t-shirt kicking on a door and break in the house',
+    },
+    {
+      label: 'Stealing003_x264.mp4',
+      src: '/SampleVideos/Stealing003_x264.mp4',
+      description: 'A black car is started and moved backward',
+    },
+    {
+      label: 'Stealing013_x264.mp4',
+      src: '/SampleVideos/Stealing013_x264.mp4',
+      description: 'A person taking a bike by hand, without starting the engine',
+    },
+  ] as const;
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles && acceptedFiles.length > 0) {
@@ -13,7 +38,7 @@ const UploadCard: React.FC = () => {
     }
   }, [setVideoFile]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     onDrop,
     accept: {
       'video/*': ['.mp4', '.mov', '.avi', '.webm']
@@ -26,6 +51,25 @@ const UploadCard: React.FC = () => {
     setVideoFile(null);
   };
 
+  const handleSelectSample = async (item: typeof samples[number]) => {
+    try {
+      setSelectingSample(item.label);
+      // Fetch the asset and convert to File so the rest of the app works the same way
+      const res = await fetch(item.src);
+      if (!res.ok) throw new Error('Failed to fetch sample video');
+      const blob = await res.blob();
+      const fileName = item.label;
+      const type = blob.type || 'video/mp4';
+      const file = new File([blob], fileName, { type });
+      setVideoFile(file);
+      setQuery(item.description);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSelectingSample(null);
+    }
+  };
+
   return (
     <motion.div 
       className="retro-card p-6 h-full flex flex-col"
@@ -35,6 +79,45 @@ const UploadCard: React.FC = () => {
       <h2 className="text-2xl font-display mb-4 text-content">Upload Video</h2>
       
       <div className="flex-1 flex flex-col gap-4">
+        {/* Test Gallery: 4 samples + 1 upload tile */}
+        <div className="bg-content/5 border border-content/10 rounded-lg p-3">
+          <p className="text-sm font-medium mb-2 text-content">Test Gallery</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {samples.map((item) => (
+              <button
+                key={item.label}
+                onClick={() => handleSelectSample(item)}
+                className={`group relative rounded-md overflow-hidden border border-content/10 hover:border-primary/50 transition-colors ${selectingSample === item.label ? 'opacity-70' : ''}`}
+                title={item.description}
+              >
+                <video
+                  src={item.src}
+                  className="w-full aspect-video object-cover bg-black"
+                  muted
+                  playsInline
+                  preload="metadata"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-black/60 text-white text-[10px] sm:text-xs px-2 py-1 truncate">{item.label}</div>
+              </button>
+            ))}
+
+            {/* 5th tile: open file dialog */}
+            <button
+              onClick={() => open()}
+              className="flex items-center justify-center border border-dashed border-content/20 rounded-md min-h-[64px] aspect-video hover:border-primary/60 hover:bg-primary/5 transition-colors"
+              title="Upload your own video"
+            >
+              <div className="flex items-center gap-2 text-content/70">
+                <Upload size={16} />
+                <span className="text-xs">Upload</span>
+              </div>
+            </button>
+          </div>
+          {selectingSample && (
+            <p className="mt-2 text-xs text-content/60">Loading {selectingSample}…</p>
+          )}
+        </div>
+
         <div 
           {...getRootProps()} 
           className={`
