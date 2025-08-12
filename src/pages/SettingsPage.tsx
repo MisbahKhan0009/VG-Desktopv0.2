@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getStore, KEYS, DEFAULT_SETTINGS, SettingsData } from '../utils/store';
+import { useAuth } from '../context/AuthContext';
 import { motion } from "framer-motion";
 import Sidebar from "../components/Sidebar";
 import ThemeToggle from "../components/ThemeToggle";
@@ -12,8 +14,9 @@ interface SettingsPageProps {
 }
 
 const SettingsPage: React.FC<SettingsPageProps> = ({ isSidebarCollapsed, toggleSidebar, currentPage, onPageChange }) => {
+  const { user, updateProfile } = useAuth();
   const [activeTab, setActiveTab] = useState("general");
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<SettingsData>({
     notifications: {
       emailNotifications: true,
       pushNotifications: false,
@@ -40,6 +43,17 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isSidebarCollapsed, toggleS
       dateFormat: "MM/DD/YYYY",
     },
   });
+
+  // load settings for current user
+  useEffect(() => {
+    (async () => {
+      const store = await getStore();
+      const key = user ? KEYS.settingsFor(user.id) : 'settings_guest';
+      const stored = (await store.get(key)) as SettingsData | null;
+      if (stored) setSettings(stored);
+      else setSettings(DEFAULT_SETTINGS);
+    })();
+  }, [user]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -82,11 +96,21 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isSidebarCollapsed, toggleS
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
-            <input type="text" className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100" defaultValue="John Doe" />
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
+              defaultValue={user?.name || ''}
+              onBlur={async (e) => { if (e.target.value && e.target.value !== user?.name) await updateProfile({ name: e.target.value }); }}
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
-            <input type="email" className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100" defaultValue="john.doe@example.com" />
+            <input
+              type="email"
+              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
+              defaultValue={user?.email || ''}
+              onBlur={async (e) => { if (e.target.value && e.target.value !== user?.email) await updateProfile({ email: e.target.value }); }}
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Organization</label>
@@ -281,11 +305,11 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isSidebarCollapsed, toggleS
 
             {/* Action Buttons */}
             <div className="mt-6 flex gap-3">
-              <motion.button className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.button onClick={async () => { const store = await getStore(); const key = user ? KEYS.settingsFor(user.id) : 'settings_guest'; await store.set(key, settings); await store.save(); }} className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Save className="w-4 h-4" />
                 Save Changes
               </motion.button>
-              <motion.button className="flex items-center gap-2 px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.button onClick={() => setSettings(DEFAULT_SETTINGS)} className="flex items-center gap-2 px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <RotateCcw className="w-4 h-4" />
                 Reset to Defaults
               </motion.button>

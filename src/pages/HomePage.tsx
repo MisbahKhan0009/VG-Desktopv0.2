@@ -2,7 +2,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import Sidebar from "../components/Sidebar";
 import ThemeToggle from "../components/ThemeToggle";
-import { BarChart3, Upload, Users, Zap, Shield, Globe } from "lucide-react";
+import { BarChart3, Upload, Users, Zap, Shield, Globe, LogIn, UserPlus, LogOut } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { getStore, KEYS, HistoryItem } from '../utils/store';
+import { useAuth } from '../context/AuthContext';
+import AuthModal from '../components/AuthModal';
+import { toast } from 'sonner';
 
 interface HomePageProps {
   isSidebarCollapsed: boolean;
@@ -56,6 +61,26 @@ const HomePage: React.FC<HomePageProps> = ({ isSidebarCollapsed, toggleSidebar, 
     },
   ];
 
+  const { user, logout } = useAuth();
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const store = await getStore();
+        const h = ((await store.get(KEYS.HISTORY)) as HistoryItem[]) || [];
+        const filtered = user ? h.filter((x) => x.userId === user.id) : h;
+        setHistory(filtered.slice(0, 10));
+      } catch (e) {
+        console.error(e);
+        toast.error('Failed to load recent activity');
+      }
+    })();
+  }, [user]);
+
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+
   return (
     <div className="flex min-h-screen bg-everforest-light-bg dark:bg-everforest-dark-bg">
       <Sidebar collapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={onPageChange} />
@@ -66,7 +91,23 @@ const HomePage: React.FC<HomePageProps> = ({ isSidebarCollapsed, toggleSidebar, 
             <h1 className="text-4xl font-display text-gray-800 dark:text-gray-100">Welcome to AnomalyDetect</h1>
             <p className="text-gray-600 dark:text-gray-300">Advanced video anomaly detection powered by AI</p>
           </motion.div>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            {user ? (
+              <button onClick={logout} className="ml-2 px-3 py-2 border rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-1">
+                <LogOut size={16} /> Logout
+              </button>
+            ) : (
+              <div className="flex gap-2">
+                <button onClick={() => { setAuthMode('signup'); setAuthOpen(true); }} className="px-3 py-2 border rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-1">
+                  <UserPlus size={16} /> Sign up
+                </button>
+                <button onClick={() => { setAuthMode('login'); setAuthOpen(true); }} className="px-3 py-2 border rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-1">
+                  <LogIn size={16} /> Log in
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         <motion.div className="space-y-6" variants={containerVariants} initial="hidden" animate="visible">
@@ -118,27 +159,27 @@ const HomePage: React.FC<HomePageProps> = ({ isSidebarCollapsed, toggleSidebar, 
           <motion.div className="retro-card p-6" variants={cardVariants}>
             <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">Recent Activity</h3>
             <div className="space-y-3">
-              {[
-                { action: "Video analyzed", file: "security_footage_001.mp4", time: "2 minutes ago", status: "completed" },
-                { action: "Batch processing", file: "training_videos/", time: "15 minutes ago", status: "in-progress" },
-                { action: "Anomaly detected", file: "production_line_cam2.mp4", time: "1 hour ago", status: "alert" },
-                { action: "Analysis complete", file: "sport_performance_data.mp4", time: "3 hours ago", status: "completed" },
-              ].map((activity, index) => (
-                <div key={index} className="flex items-center justify-between py-2 border-b border-gray-200 dark:border-gray-700 last:border-0">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-3 h-3 rounded-full ${activity.status === "completed" ? "bg-green-500" : activity.status === "in-progress" ? "bg-yellow-500" : "bg-red-500"}`} />
-                    <div>
-                      <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{activity.action}</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">{activity.file}</p>
+              {history.length === 0 ? (
+                <p className="text-sm text-gray-600 dark:text-gray-400">No recent activity yet.</p>
+              ) : (
+                history.map((h) => (
+                  <div key={h.id} className="flex items-center justify-between py-2 border-b border-gray-200 dark:border-gray-700 last:border-0">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-3 h-3 rounded-full ${h.status === 'completed' ? 'bg-green-500' : h.status === 'in-progress' ? 'bg-yellow-500' : 'bg-red-500'}`} />
+                      <div>
+                        <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{h.fileName}</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 truncate max-w-[360px]">{h.query}</p>
+                      </div>
                     </div>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{new Date(h.time).toLocaleString()}</span>
                   </div>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">{activity.time}</span>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </motion.div>
         </motion.div>
       </main>
+  <AuthModal open={authOpen} mode={authMode} onClose={() => setAuthOpen(false)} />
     </div>
   );
 };

@@ -13,6 +13,7 @@ import SettingsPage from "./pages/SettingsPage";
 import { ResultsProvider } from "./context/ResultsContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import ThemeToggle from "./components/ThemeToggle";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -40,7 +41,9 @@ function App() {
   if (currentPage === "batch") {
     return (
       <ThemeProvider>
-        <FolderUploadPage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
+        <AuthProvider>
+          <FolderUploadPage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
+        </AuthProvider>
       </ThemeProvider>
     );
   }
@@ -48,7 +51,9 @@ function App() {
   if (currentPage === "home") {
     return (
       <ThemeProvider>
-        <HomePage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
+        <AuthProvider>
+          <HomePage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
+        </AuthProvider>
       </ThemeProvider>
     );
   }
@@ -56,7 +61,9 @@ function App() {
   if (currentPage === "results") {
     return (
       <ThemeProvider>
-        <ResultsPage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
+        <AuthProvider>
+          <ResultsPage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
+        </AuthProvider>
       </ThemeProvider>
     );
   }
@@ -64,21 +71,24 @@ function App() {
   if (currentPage === "settings") {
     return (
       <ThemeProvider>
-        <SettingsPage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
+        <AuthProvider>
+          <SettingsPage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
+        </AuthProvider>
       </ThemeProvider>
     );
   }
 
   return (
     <ThemeProvider>
-      <ResultsProvider>
+      <AuthProvider>
+        <ResultsProvider>
         <div className="flex min-h-screen bg-everforest-light-bg dark:bg-everforest-dark-bg">
           <Sidebar collapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
 
           <main className={`flex-1 p-4 transition-all duration-300 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
             <div className="flex justify-between items-center mb-6">
               <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                <h1 className="text-4xl font-display text-gray-800 dark:text-gray-100">Anomaly Detection</h1>
+                <h1 className="text-4xl font-display text-gray-800 dark:text-gray-100">AnomalyNQA</h1>
                 <p className="text-gray-600 dark:text-gray-300">Upload a video and enter a query to detect anomalies</p>
               </motion.div>
               <ThemeToggle />
@@ -107,7 +117,8 @@ function App() {
             </motion.div>
           </main>
         </div>
-      </ResultsProvider>
+        </ResultsProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

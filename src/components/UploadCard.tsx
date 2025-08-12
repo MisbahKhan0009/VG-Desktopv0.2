@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
 import { Upload, FileVideo, X } from 'lucide-react';
 import { useResults } from '../context/ResultsContext';
+import { toast } from 'sonner';
 
 const UploadCard: React.FC = () => {
   const { videoFile, setVideoFile, query, setQuery, submitRequest, loading, error } = useResults();
@@ -65,6 +66,7 @@ const UploadCard: React.FC = () => {
       setQuery(item.description);
     } catch (e) {
       console.error(e);
+      toast.error('Failed to load sample video');
     } finally {
       setSelectingSample(null);
     }

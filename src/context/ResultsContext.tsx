@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import axios from 'axios';
+import { getStore, KEYS, HistoryItem } from '../utils/store';
+import { useAuth } from './AuthContext';
+import { toast } from 'sonner';
 
 // Types
 export interface MomentRetrieval {
@@ -49,6 +52,7 @@ const ResultsContext = createContext<ResultsContextType>(initialResults);
 export const useResults = () => useContext(ResultsContext);
 
 export const ResultsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { user } = useAuth();
   const [results, setResults] = useState<Results | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,7 +76,9 @@ export const ResultsProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const submitRequest = async () => {
     if (!videoFile || !query.trim()) {
-      setError('Please upload a video and enter a query');
+      const msg = 'Please upload a video and enter a query';
+      setError(msg);
+      toast.error(msg);
       return;
     }
 
@@ -108,9 +114,30 @@ export const ResultsProvider: React.FC<{ children: ReactNode }> = ({ children })
       };
 
       setResults(formattedResults);
+
+      // Save to history
+      try {
+        const store = await getStore();
+        const history = ((await store.get(KEYS.HISTORY)) as HistoryItem[]) || [];
+        const item: HistoryItem = {
+          id: crypto.randomUUID(),
+          userId: user?.id ?? null,
+          fileName: videoFile.name,
+          query,
+          time: new Date().toISOString(),
+          status: 'completed',
+        };
+        await store.set(KEYS.HISTORY, [item, ...history].slice(0, 200));
+        await store.save();
+      } catch (e) {
+        console.error('Failed to save history', e);
+        toast.error('Failed to save history');
+      }
     } catch (err) {
       console.error('Error submitting request:', err);
-      setError('Failed to process the video. Please try again.');
+      const msg = 'Failed to process the video. Please try again.';
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }

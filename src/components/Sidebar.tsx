@@ -57,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar, currentPage
             <div className="w-8 h-8 rounded-full bg-everforest-light-accent-cyan dark:bg-everforest-dark-accent-cyan flex items-center justify-center">
               <BarChart2 size={18} className="text-white" />
             </div>
-            {!collapsed && <span className="font-display font-bold text-lg text-gray-800 dark:text-gray-100">AnomalyDetect</span>}
+            {!collapsed && <span className="font-display font-bold text-lg text-gray-800 dark:text-gray-100">AnomalyNQA</span>}
           </motion.div>
           <button onClick={toggleSidebar} className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 transition-colors p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
             {collapsed ? <Menu size={18} /> : <ChevronLeft size={18} />}
@@ -74,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar, currentPage
                   className={`w-full flex items-center gap-3 px-4 py-3 transition-all hover:bg-everforest-light-bg dark:hover:bg-everforest-dark-bg text-left
                     ${item.active ? "text-everforest-light-accent-cyan dark:text-everforest-dark-accent-cyan border-r-4 border-everforest-light-accent-cyan dark:border-everforest-dark-accent-cyan bg-everforest-light-accent-cyan/10 dark:bg-everforest-dark-accent-cyan/10" : "text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100"}`}
                 >
-                  <item.icon size={20} />
+                  <item.icon size={20} className="flex-shrink-0" />
                   <motion.span className={`whitespace-nowrap ${collapsed ? "opacity-0" : "opacity-100"}`} animate={{ opacity: collapsed ? 0 : 1 }} transition={{ duration: 0.2 }}>
                     {item.label}
                   </motion.span>
@@ -87,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar, currentPage
         {/* Footer */}
         <div className="p-4 border-t border-everforest-light-border dark:border-everforest-dark-border">
           <motion.div className="text-xs text-gray-500 dark:text-gray-400" animate={{ opacity: collapsed ? 0 : 1 }} transition={{ duration: 0.2 }}>
-            {!collapsed && <p>AnomalyDetect v1.0</p>}
+            {!collapsed && <p>AnomalyNQA V1.0</p>}
           </motion.div>
         </div>
       </div>
