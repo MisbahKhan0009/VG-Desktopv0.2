@@ -7,8 +7,8 @@ import { AlertTriangle, CheckCircle, Clock, BarChart3, Eye, Download, Filter } f
 interface ResultsPageProps {
   isSidebarCollapsed: boolean;
   toggleSidebar: () => void;
-  currentPage: "home" | "single" | "batch" | "results" | "settings";
-  onPageChange: (page: "home" | "single" | "batch" | "results" | "settings") => void;
+  currentPage: "home" | "single" | "results" | "settings";
+  onPageChange: (page: "home" | "single" | "results" | "settings") => void;
 }
 
 const ResultsPage: React.FC<ResultsPageProps> = ({ isSidebarCollapsed, toggleSidebar, currentPage, onPageChange }) => {

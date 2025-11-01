@@ -66,6 +66,7 @@ export interface HistoryItem {
   userId: string | null;
   fileName: string;
   query: string;
+  anomalyType?: string; // one-word type like robbery, arson
   time: string; // ISO
   status: 'completed' | 'in-progress' | 'failed';
 }

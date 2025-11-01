@@ -6,7 +6,7 @@ import VideoPreviewCard from "./components/VideoPreviewCard";
 import GraphCard from "./components/GraphCard";
 import MomentsTableCard from "./components/MomentsTableCard";
 import HighlightedMomentCard from "./components/HighlightedMomentCard";
-import FolderUploadPage from "./pages/FolderUploadPage";
+// Batch Upload page removed
 import HomePage from "./pages/HomePage";
 import ResultsPage from "./pages/ResultsPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -17,13 +17,13 @@ import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [currentPage, setCurrentPage] = useState<"home" | "single" | "batch" | "results" | "settings">("home");
+  const [currentPage, setCurrentPage] = useState<"home" | "single" | "results" | "settings">("home");
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
-  const handlePageChange = (page: "home" | "single" | "batch" | "results" | "settings") => {
+  const handlePageChange = (page: "home" | "single" | "results" | "settings") => {
     setCurrentPage(page);
   };
 
@@ -38,15 +38,7 @@ function App() {
     },
   };
 
-  if (currentPage === "batch") {
-    return (
-      <ThemeProvider>
-        <AuthProvider>
-          <FolderUploadPage isSidebarCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} currentPage={currentPage} onPageChange={handlePageChange} />
-        </AuthProvider>
-      </ThemeProvider>
-    );
-  }
+  // Batch page removed
 
   if (currentPage === "home") {
     return (

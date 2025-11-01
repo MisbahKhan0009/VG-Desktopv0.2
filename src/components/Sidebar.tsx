@@ -1,12 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Home, Upload, BarChart2, Settings, Menu, ChevronLeft, FolderOpen } from "lucide-react";
+import { Home, Upload, BarChart2, Settings, Menu, ChevronLeft } from "lucide-react";
 
 interface SidebarProps {
   collapsed: boolean;
   toggleSidebar: () => void;
-  currentPage?: "home" | "single" | "batch" | "results" | "settings";
-  onPageChange?: (page: "home" | "single" | "batch" | "results" | "settings") => void;
+  currentPage?: "home" | "single" | "results" | "settings";
+  onPageChange?: (page: "home" | "single" | "results" | "settings") => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar, currentPage = "home", onPageChange }) => {
@@ -27,12 +27,6 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar, currentPage
       label: "Single Upload",
       active: currentPage === "single",
       onClick: () => onPageChange?.("single"),
-    },
-    {
-      icon: FolderOpen,
-      label: "Batch Upload",
-      active: currentPage === "batch",
-      onClick: () => onPageChange?.("batch"),
     },
     {
       icon: BarChart2,

@@ -9,8 +9,8 @@ import { User, Bell, Shield, Database, Monitor, Key, Save, RotateCcw } from "luc
 interface SettingsPageProps {
   isSidebarCollapsed: boolean;
   toggleSidebar: () => void;
-  currentPage: "home" | "single" | "batch" | "results" | "settings";
-  onPageChange: (page: "home" | "single" | "batch" | "results" | "settings") => void;
+  currentPage: "home" | "single" | "results" | "settings";
+  onPageChange: (page: "home" | "single" | "results" | "settings") => void;
 }
 
 const SettingsPage: React.FC<SettingsPageProps> = ({ isSidebarCollapsed, toggleSidebar, currentPage, onPageChange }) => {

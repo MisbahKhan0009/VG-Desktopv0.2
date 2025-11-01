@@ -119,11 +119,14 @@ export const ResultsProvider: React.FC<{ children: ReactNode }> = ({ children })
       try {
         const store = await getStore();
         const history = ((await store.get(KEYS.HISTORY)) as HistoryItem[]) || [];
+        // Derive a one-word anomaly type from the query (simple heuristic)
+        const anomalyType = query.trim().split(/\s+/)[0]?.toLowerCase() || 'unknown';
         const item: HistoryItem = {
           id: crypto.randomUUID(),
           userId: user?.id ?? null,
           fileName: videoFile.name,
           query,
+          anomalyType,
           time: new Date().toISOString(),
           status: 'completed',
         };
