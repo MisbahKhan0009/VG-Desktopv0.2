@@ -3,31 +3,35 @@ import { motion } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
 import { Upload, FileVideo, X } from 'lucide-react';
 import { useResults } from '../context/ResultsContext';
+import { toast } from 'sonner';
 
 const UploadCard: React.FC = () => {
   const { videoFile, setVideoFile, query, setQuery, submitRequest, loading, error } = useResults();
   const [selectingSample, setSelectingSample] = useState<string | null>(null);
 
-  // Sample gallery items (4 videos + descriptions)
+  // Resolve sample base URL: prefer R2/public CDN via env, fallback to local during dev
+  const SAMPLE_BASE = (import.meta as any).env?.VITE_SAMPLE_BASE_URL || '/SampleVideos';
+
+  // Sample gallery items (4 videos + descriptions) using configurable base
   const samples = [
     {
       label: 'Abuse001_x264.mp4',
-      src: '/SampleVideos/Abuse001_x264.mp4',
+      src: `${SAMPLE_BASE}/Abuse001_x264.mp4`,
       description: 'A man slaping an woman and woman falls down',
     },
     {
       label: 'Burglary005_x264.mp4',
-      src: '/SampleVideos/Burglary005_x264.mp4',
+      src: `${SAMPLE_BASE}/Burglary005_x264.mp4`,
   description: 'A man wearing white t-shirt kicking on a door and break in the house',
     },
     {
       label: 'Stealing003_x264.mp4',
-      src: '/SampleVideos/Stealing003_x264.mp4',
+      src: `${SAMPLE_BASE}/Stealing003_x264.mp4`,
       description: 'A black car is started and moved backward',
     },
     {
       label: 'Stealing013_x264.mp4',
-      src: '/SampleVideos/Stealing013_x264.mp4',
+      src: `${SAMPLE_BASE}/Stealing013_x264.mp4`,
       description: 'A person taking a bike by hand, without starting the engine',
     },
   ] as const;
@@ -65,6 +69,7 @@ const UploadCard: React.FC = () => {
       setQuery(item.description);
     } catch (e) {
       console.error(e);
+      toast.error('Failed to load sample video');
     } finally {
       setSelectingSample(null);
     }
